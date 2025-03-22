@@ -22,6 +22,7 @@ export default function Page() {
               </label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 autoComplete="email"
                 required

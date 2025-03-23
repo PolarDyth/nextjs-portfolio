@@ -1,3 +1,4 @@
+import AdminSidebar from "@/components/admin/sidebar"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
@@ -10,7 +11,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   }
   return (
     <div>
-      <h1>Dashboard Layout</h1>
+      <AdminSidebar />
       {children}
     </div>
   )

@@ -33,7 +33,7 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
-  const {
+  const{
     data: { user },
   } = await supabase.auth.getUser()
 
@@ -46,6 +46,10 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
+  }
+
+  if (request.nextUrl.pathname.startsWith('/dashboard') && !user) {
+    return NextResponse.redirect(new URL('/login', request.nextUrl))
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

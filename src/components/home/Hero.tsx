@@ -40,45 +40,46 @@ export default function Hero() {
   }, [text, isDeleting, loopNum, typingSpeed]);
 
   return (
-    <section id="home" className="container mx-auto py-20 md:py-32 flex flex-col md:flex-row items-center justify-between">
-      <div className="md:w-1/2 space-y-6 flex flex-col items-start text-left">
-        <span className="bg-muted text-primary px-3 py-1 rounded text-sm">MSc Software Engineering Student</span>
-        <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+    <section id="home" className="container mx-auto py-12 sm:py-16 md:py-20 lg:py-28 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 px-6">
+      <div className="w-full md:w-1/2 space-y-4 sm:space-y-6 flex flex-col items-center text-center md:items-start md:text-left">
+        <span className="bg-muted text-primary px-3 py-1 rounded text-sm inline-block">MSc Software Engineering Student</span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
           <span>Building</span> <br />
-          <span className="text-secondary inline-block min-w-[200px]">{text}<span className="animate-pulse duration-0.5s">|</span></span> <br />
+          <span className="text-secondary inline-block min-w-[150px] sm:min-w-[200px]">{text}<span className="animate-pulse duration-0.5s">|</span></span> <br />
           <span>Experiences</span>
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-sm sm:text-base max-w-md">
           Heriot Watt University student with expertise in Java, React, and Python, creating innovative software solutions.
         </p>
-        <div className="flex gap-5">
-          <Button asChild>
+        <div className="flex gap-3 sm:gap-5 flex-wrap">
+          <Button asChild className="sm:text-base">
             <Link href="/projects" className="group">
-              View Projects <ArrowRight className="transition-transform group-hover:translate-x-1" />
+              View Projects <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
-          <Button asChild variant="outline">
+          <Button asChild variant="outline" className="sm:text-base">
             <Link href="/resume">
               Resume
             </Link>
           </Button>
         </div>
-        <div className="flex gap-5 items-center">
-          <Link href="github.com">
-            <SiGithub className="w-5px h-5px text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
+        <div className="flex gap-5 items-center pt-2">
+          <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
+            <SiGithub className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
-          <Link href="linkedin.com">
-            <Linkedin className="w-5px h-5px text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
+          <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+            <Linkedin className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
-          <Link href="linkedin.com">
-            <Mail className="w-5px h-5px text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
+          <Link href="mailto:your@email.com">
+            <Mail className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
         </div>
       </div>
 
-      {/* Rest of the component remains unchanged */}
-      <div>
-        <svg width="600" height="500" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" className="w-full max-w-lg">
+      {/* Terminal SVG - More responsive */}
+      <div className="w-full md:w-1/2 flex justify-center md:justify-end mt-8 md:mt-0">
+        <svg width="600" height="500" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" 
+          className="w-full max-w-[350px] sm:max-w-[400px] md:max-w-[450px] lg:max-w-[500px]">
           {/* Terminal window background */}
           <rect x="10" y="10" width="480" height="380" rx="10" ry="10" fill="#1F1F3A" stroke="#252a3a" strokeWidth="2" />
 

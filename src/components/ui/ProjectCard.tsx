@@ -6,13 +6,13 @@ import Image from "next/image";
 interface SimpleProject {
   key: number;
   image: {
-    src: string
-    alt: string
-    description?: string
-  }
+    src: string;
+    alt: string;
+    description?: string;
+  };
   title: string;
   description: string;
-  skills: string[];
+  skills: (string[] | string[][]);
   github: string;
   demo?: string;
   slug: string;
@@ -21,7 +21,7 @@ interface SimpleProject {
 export default function ProjectCard(props: SimpleProject) {
   return (
     <div className="bg-card rounded-xl overflow-hidden flex flex-col group hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-2 animate-fade-in h-[440px]">
-      <div  className="relative h-[240px]">
+      <div className="relative h-[240px]">
         <Image
           src={props.image.src}
           alt={props.image.alt}
@@ -31,16 +31,28 @@ export default function ProjectCard(props: SimpleProject) {
         />
 
         <div className="absolute inset-0 bg-primary/80 p-6 opacity-0 group-hover:opacity-100 flex items-end justify-between transition-opacity duration-300">
-          <Button asChild variant="secondary" className="scale-90 group-hover:scale-100 transition-transform duration-300">
+          <Button
+            asChild
+            variant="secondary"
+            className="scale-90 group-hover:scale-100 transition-transform duration-300"
+          >
             <Link href={props.github}>
-              <span><SiGithub /></span>
+              <span>
+                <SiGithub />
+              </span>
               <span>GitHub</span>
             </Link>
           </Button>
           {props.demo && (
-            <Button asChild variant="secondary" className="scale-90 group-hover:scale-100 transition-transform duration-300">
+            <Button
+              asChild
+              variant="secondary"
+              className="scale-90 group-hover:scale-100 transition-transform duration-300"
+            >
               <Link href={props.demo}>
-                <span><ExternalLink /></span>
+                <span>
+                  <ExternalLink />
+                </span>
                 <span>Demo</span>
               </Link>
             </Button>
@@ -49,7 +61,10 @@ export default function ProjectCard(props: SimpleProject) {
       </div>
       <div className="flex-1 p-6 flex flex-col">
         <h3 className="text-xl font-bold mb-2">
-          <Link href={"/projects/" + props.slug} className="hover:text-primary group/link transition-colors inline-flex items-center">
+          <Link
+            href={"/projects/" + props.slug}
+            className="hover:text-primary group/link transition-colors inline-flex items-center"
+          >
             {props.title}
             <ArrowRight
               size={16}
@@ -58,18 +73,26 @@ export default function ProjectCard(props: SimpleProject) {
           </Link>
         </h3>
 
-        <p className="text-muted-foreground line-clamp-3 mt-2">{props.description}</p>
+        <p className="text-muted-foreground line-clamp-3 mt-2">
+          {props.description}
+        </p>
         <div className="mt-auto pt-4">
-          {props.skills.map((skill: string, skillIndex: number) => (
+          {props.skills.map((skill, skillIndex) => (
             <span
               key={skillIndex}
               className="bg-background cursor-pointer rounded-full px-2 py-1 text-sm inline-block m-1 hover:bg-primary/10 transition-colors"
             >
-              {skill}
+              {Array.isArray(skill) ? (
+                <Link href={skill[1]} target="_blank" rel="noopener noreferrer">
+                  {skill[0]}
+                </Link>
+              ) : (
+                skill
+              )}
             </span>
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -14,7 +14,7 @@ export default function NotFound() {
         </div>
         
         <p className="text-muted-foreground">
-          Oops! The page you're looking for doesn't exist or has been moved.
+          Oops! The page you&#39;re looking for doesn&#39;t exist or has been moved.
         </p>
         
         <div className="relative py-10">
@@ -23,7 +23,7 @@ export default function NotFound() {
           </div>
           <div className="relative flex justify-center">
             <span className="bg-background px-3 text-sm text-muted-foreground">
-              Let's get you back on track
+              Let&#39;s get you back on track
             </span>
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function NotFound() {
         <svg width="100%" height="100" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
           <rect x="0" y="0" width="400" height="100" rx="6" fill="#1F1F3A" />
           <text x="20" y="30" fontFamily="monospace" fontSize="14" fill="#F0C674">$</text>
-          <text x="35" y="30" fontFamily="monospace" fontSize="14" fill="#FFFFFF"> find /path -name "page"</text>
+          <text x="35" y="30" fontFamily="monospace" fontSize="14" fill="#FFFFFF"> find /path -name &quot;page&quot;</text>
           
           <text x="20" y="55" fontFamily="monospace" fontSize="14" fill="#E11D48">Error:</text>
           <text x="70" y="55" fontFamily="monospace" fontSize="14" fill="#FFFFFF"> Page not found in directory</text>

@@ -36,7 +36,7 @@ export default function Page() {
                   <Filter className="h-4 w-4" />
                 </Button>
                 <Button asChild>
-                  <Link href="/admin/projects/new">
+                  <Link href="/dashboard/project/create">
                     <Plus className="h-4 w-4 mr-2" /> Add Project
                   </Link>
                 </Button>

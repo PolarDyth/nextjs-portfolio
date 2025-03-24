@@ -20,7 +20,9 @@ import {
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Project } from "@/utils/supabase/projects";
+import { getProjects } from "@/utils/supabase/projects/projects-data";
+import { Project } from "@/utils/supabase/projects/definitions";
+import { deleteProject } from "@/utils/supabase/projects/project-actions";
 
 export default function AdminProjectList({ searchQuery = "" }) {
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
@@ -31,7 +33,7 @@ export default function AdminProjectList({ searchQuery = "" }) {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const projectData = await projectService.getProjects();
+        const projectData = await getProjects();
         setProjects(projectData);
       } catch (error) {
         console.error("Failed to fetch projects:", error);
@@ -41,7 +43,7 @@ export default function AdminProjectList({ searchQuery = "" }) {
       }
     };
     fetchProjects();
-  }, []);
+  }, [projects]);
 
   useEffect(() => {
     // Filter projects based on search query
@@ -60,7 +62,7 @@ export default function AdminProjectList({ searchQuery = "" }) {
 
   const handleDeleteProject = async (id: number) => {
     try {
-      await projectService.deleteProject(id);
+      await deleteProject(id);
       setProjects((prev) => prev.filter((p) => p.id !== id));
       // This way, the UI updates without a full page reload.
     } catch (error) {

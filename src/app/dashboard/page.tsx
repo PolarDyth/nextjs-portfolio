@@ -1,12 +1,17 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Filter, Plus, Search } from "lucide-react"
-import Link from "next/link"
+"use client";
+
+import AdminProjectList from "@/components/admin/projectlist";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Filter, Plus, Search } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function Page() {
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <>
-              <div className="flex-1 p-8">
+        <div className="flex-1 items-center p-8 py-30">
           <div className="max-w-6xl mx-auto">
             <header className="mb-8">
               <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
@@ -41,7 +46,6 @@ export default function Page() {
             <AdminProjectList searchQuery={searchQuery} />
           </div>
         </div>
-      </div>
     </>
-  )
+  );
 }

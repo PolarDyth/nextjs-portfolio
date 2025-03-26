@@ -6,7 +6,7 @@ import { Project } from "./definitions";
 export async function createProject(project: Project): Promise<void> {
   const supabase = await createClient();
   
-  const { error } = await supabase.from("projects").insert([project]);
+  const { error } = await supabase.from("projects").insert({ data: project.data, slug: project.slug });
   if (error) {
     throw error;
   }

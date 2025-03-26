@@ -1,5 +1,4 @@
 export type Project = {
-  id: number;
   data: {
     title: string;
     description: string;
@@ -46,7 +45,5 @@ export type Project = {
     overview: string;
     process: string;
   };
-  created_at: string;
-  updated_at: string;
   slug: string;
 }

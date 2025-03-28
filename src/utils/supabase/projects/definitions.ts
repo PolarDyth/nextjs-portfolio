@@ -46,4 +46,4 @@ export type Project = {
     process: string;
   };
   slug: string;
-}
+};

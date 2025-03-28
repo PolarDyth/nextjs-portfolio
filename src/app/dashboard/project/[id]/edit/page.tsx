@@ -1,4 +1,4 @@
-import ProjectEditForm from "@/components/admin/project/edit-form";
+import ProjectEditForm from "@/components/dashboard/project/edit-form";
 import { ProjectData } from "@/utils/supabase/projects/definitions";
 import { getProjectById } from "@/utils/supabase/projects/projects-data";
 import { notFound } from "next/navigation";

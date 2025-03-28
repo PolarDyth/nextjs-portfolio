@@ -313,7 +313,6 @@ export default function ProjectEditForm({ project, id }: { project: ProjectData;
                                 placeholder="My Awesome Project"
                                 {...field}
                                 className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
-                                defaultValue={field.value || ""}
                               />
                             </FormControl>
                             <FormMessage />
@@ -368,7 +367,6 @@ export default function ProjectEditForm({ project, id }: { project: ProjectData;
                                   focus-visible:ring-primary/50 h-11 transition-all duration-200
                                   ${autoSlug ? "bg-muted/50 text-muted-foreground" : ""}
                                 `}
-                                defaultValue={field.value || ""}
                               />
                             </FormControl>
                             <FormDescription className="text-xs text-muted-foreground/80">
@@ -1064,7 +1062,7 @@ export default function ProjectEditForm({ project, id }: { project: ProjectData;
                           appendStat({
                             label: "",
                             value: "",
-                            icon: { name: "", styling: "" },
+                            icon: { name: "barChart", styling: "" },
                           })
                         }
                         className="group hover:bg-primary/10 hover:text-primary transition-all duration-200"
@@ -1293,7 +1291,7 @@ export default function ProjectEditForm({ project, id }: { project: ProjectData;
                           appendInsight({
                             title: "",
                             content: "",
-                            icon: { name: "", styling: "" },
+                            icon: { name: "lightbulb", styling: "" },
                           })
                         }
                         className="group hover:bg-primary/10 hover:text-primary transition-all duration-200"

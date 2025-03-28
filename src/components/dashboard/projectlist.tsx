@@ -39,7 +39,6 @@ export default function AdminProjectList({ searchQuery = "" }) {
         console.error("Failed to fetch projects:", error);
       } finally {
         setLoading(false);
-        console.log(projects[0]);
       }
     };
     fetchProjects();

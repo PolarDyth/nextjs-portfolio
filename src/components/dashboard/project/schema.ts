@@ -1,4 +1,13 @@
 import { z } from "zod";
+import { IconName } from "@/utils/string-to-icon";
+
+const validIconNames = Object.keys(
+
+  {} as Record<IconName, unknown>
+) as [IconName, ...IconName[]];
+
+// Create a zod schema for icon names
+const iconNameSchema = z.enum(validIconNames);
 
 const imageSchema = z.object({
   src: z.string().url(),
@@ -10,7 +19,7 @@ const statSchema = z.object({
   label: z.string().max(50),
   value: z.string().max(50),
   icon: z.object({
-    name: z.string().max(50),
+    name: iconNameSchema,
     styling: z.string().optional(),
   }),
 });
@@ -34,7 +43,7 @@ const insightsSchema = z.object({
   title: z.string().max(50),
   content: z.string().max(1000),
   icon: z.object({
-    name: z.string().max(50),
+    name: iconNameSchema,
     styling: z.string().optional(),
   }),
 });

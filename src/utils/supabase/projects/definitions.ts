@@ -1,3 +1,5 @@
+import StringToIcon from "@/utils/string-to-icon";
+
 export type Project = {
   data: {
     title: string;
@@ -17,7 +19,7 @@ export type Project = {
       label: string;
       value: string;
       icon: {
-        name: string;
+        name: keyof typeof StringToIcon;
         styling?: string;
       };
     }[];
@@ -38,7 +40,7 @@ export type Project = {
       title: string;
       content: string;
       icon: {
-        name: string;
+        name: keyof typeof StringToIcon;
         styling?: string;
       };
     }[];

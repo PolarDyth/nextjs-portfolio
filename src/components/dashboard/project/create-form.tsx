@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import type { z } from "zod"
-import { projectFormSchema } from "./schema"
-import { useEffect, useState } from "react"
-import { useForm, useFieldArray } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { handleSubmitProject } from "./actions"
-import { toast } from "sonner"
+import type { z } from "zod";
+import { projectFormSchema } from "./schema";
+import { useEffect, useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { handleSubmitProject } from "./actions";
+import { toast } from "sonner";
 import {
   Loader2,
   PlusCircle,
@@ -22,44 +22,58 @@ import {
   BarChart,
   Clock,
   Lightbulb,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
-import { motion } from "framer-motion"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
+import { motion } from "framer-motion";
 
-type FormValues = z.infer<typeof projectFormSchema>
+type FormValues = z.infer<typeof projectFormSchema>;
 
 // Animation variants
 const fadeIn = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.4 } },
-}
+};
 
 const slideUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-}
+};
 
 export default function ProjectCreateForm() {
   // Simple inputs
-  const [skillInput, setSkillInput] = useState<string>("")
-  const [featureInput, setFeatureInput] = useState<string>("")
-  const [challengeInput, setChallengeInput] = useState<string>("")
-  const [learningInput, setLearningInput] = useState<string>("")
+  const [skillInput, setSkillInput] = useState<string>("");
+  const [featureInput, setFeatureInput] = useState<string>("");
+  const [challengeInput, setChallengeInput] = useState<string>("");
+  const [learningInput, setLearningInput] = useState<string>("");
 
   // Form state
-  const [autoSlug, setAutoSlug] = useState<boolean>(true)
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const [activeTab, setActiveTab] = useState<string>("basic")
+  const [autoSlug, setAutoSlug] = useState<boolean>(true);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>("basic");
 
   const form = useForm<FormValues>({
     resolver: zodResolver(projectFormSchema),
@@ -74,7 +88,7 @@ export default function ProjectCreateForm() {
         features: [],
         challenges: [],
         learnings: [],
-        stats: [{ label: "", value: "", icon: { name: "" } }],
+        stats: [{ label: "", value: "", icon: { name: "lightbulb" } }],
         timeline: [{ title: "", date: "", description: "" }],
         testimonial: {
           quote: "",
@@ -84,46 +98,46 @@ export default function ProjectCreateForm() {
             avatar: "",
           },
         },
-        insights: [{ title: "", content: "", icon: { name: "" } }],
+        insights: [{ title: "", content: "", icon: { name: "barChart" } }],
         overview: "",
         process: "",
       },
       slug: "",
     },
-  })
+  });
 
   // Set up field arrays for repeatable sections
   const {
     fields: imageFields,
     append: appendImage,
     remove: removeImage,
-  } = useFieldArray({ control: form.control, name: "data.images" })
+  } = useFieldArray({ control: form.control, name: "data.images" });
 
   const {
     fields: statFields,
     append: appendStat,
     remove: removeStat,
-  } = useFieldArray({ control: form.control, name: "data.stats" })
+  } = useFieldArray({ control: form.control, name: "data.stats" });
 
   const {
     fields: timelineFields,
     append: appendTimeline,
     remove: removeTimeline,
-  } = useFieldArray({ control: form.control, name: "data.timeline" })
+  } = useFieldArray({ control: form.control, name: "data.timeline" });
 
   const {
     fields: insightFields,
     append: appendInsight,
     remove: removeInsight,
-  } = useFieldArray({ control: form.control, name: "data.insights" })
+  } = useFieldArray({ control: form.control, name: "data.insights" });
 
-  const { watch, setValue, getValues, handleSubmit, control } = form
+  const { watch, setValue, getValues, handleSubmit, control } = form;
 
-  const title = watch("data.title")
-  const skills = watch("data.skills")
-  const features = watch("data.features")
-  const challenges = watch("data.challenges")
-  const learnings = watch("data.learnings")
+  const title = watch("data.title");
+  const skills = watch("data.skills");
+  const features = watch("data.features");
+  const challenges = watch("data.challenges");
+  const learnings = watch("data.learnings");
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -132,142 +146,157 @@ export default function ProjectCreateForm() {
         .toLowerCase()
         .replace(/[^\w\s-]/g, "")
         .replace(/\s+/g, "-")
-        .replace(/-+/g, "-")
+        .replace(/-+/g, "-");
 
-      setValue("slug", generatedSlug, { shouldValidate: true })
+      setValue("slug", generatedSlug, { shouldValidate: true });
     }
-  }, [title, autoSlug, setValue])
+  }, [title, autoSlug, setValue]);
 
   // Generate random slug
   const generateRandomSlug = () => {
-    const randomStr = Math.random().toString(36).substring(2, 10)
+    const randomStr = Math.random().toString(36).substring(2, 10);
     const prefix = getValues("data.title")
       ? getValues("data.title")
           .toLowerCase()
           .replace(/[^\w\s-]/g, "")
           .replace(/\s+/g, "-")
           .substring(0, 10)
-      : "project"
+      : "project";
 
-    const newSlug = `${prefix}-${randomStr}`
-    setValue("slug", newSlug, { shouldValidate: true })
+    const newSlug = `${prefix}-${randomStr}`;
+    setValue("slug", newSlug, { shouldValidate: true });
 
     // Show toast notification
-    toast.success("Random slug generated!")
-  }
+    toast.success("Random slug generated!");
+  };
 
   // Generic function to add items to simple array fields (strings)
   const addToArray = (
-    arrayName: "data.skills" | "data.features" | "data.challenges" | "data.learnings",
+    arrayName:
+      | "data.skills"
+      | "data.features"
+      | "data.challenges"
+      | "data.learnings",
     input: string,
     watcher: string[],
-    setInput: React.Dispatch<React.SetStateAction<string>>,
+    setInput: React.Dispatch<React.SetStateAction<string>>
   ) => {
-    const trimmedInput = input.trim()
+    const trimmedInput = input.trim();
     if (trimmedInput && !watcher.includes(trimmedInput)) {
-      setValue(arrayName, [...(watcher || []), trimmedInput], { shouldValidate: true })
-      setInput("")
+      setValue(arrayName, [...(watcher || []), trimmedInput], {
+        shouldValidate: true,
+      });
+      setInput("");
     }
-  }
+  };
 
   // Helper functions for simple arrays
-  const addSkill = () => addToArray("data.skills", skillInput, skills, setSkillInput)
+  const addSkill = () =>
+    addToArray("data.skills", skillInput, skills, setSkillInput);
   const removeSkill = (skill: string) =>
     setValue(
       "data.skills",
       skills.filter((s) => s !== skill),
-      { shouldValidate: true },
-    )
+      { shouldValidate: true }
+    );
 
-  const addFeature = () => addToArray("data.features", featureInput, features, setFeatureInput)
+  const addFeature = () =>
+    addToArray("data.features", featureInput, features, setFeatureInput);
   const removeFeature = (feature: string) =>
     setValue(
       "data.features",
       features.filter((f) => f !== feature),
-      { shouldValidate: true },
-    )
+      { shouldValidate: true }
+    );
 
-  const addChallenge = () => addToArray("data.challenges", challengeInput, challenges, setChallengeInput)
+  const addChallenge = () =>
+    addToArray(
+      "data.challenges",
+      challengeInput,
+      challenges,
+      setChallengeInput
+    );
   const removeChallenge = (challenge: string) =>
     setValue(
       "data.challenges",
       challenges.filter((c) => c !== challenge),
-      { shouldValidate: true },
-    )
+      { shouldValidate: true }
+    );
 
-  const addLearning = () => addToArray("data.learnings", learningInput, learnings, setLearningInput)
+  const addLearning = () =>
+    addToArray("data.learnings", learningInput, learnings, setLearningInput);
   const removeLearning = (learning: string) =>
     setValue(
       "data.learnings",
       learnings.filter((l) => l !== learning),
-      { shouldValidate: true },
-    )
+      { shouldValidate: true }
+    );
 
   // Form submission handler
   const onSubmit = async (values: FormValues) => {
     try {
-      setIsSubmitting(true)
-      console.log("Submitting form with values:", values)
+      setIsSubmitting(true);
+      console.log("Submitting form with values:", values);
 
       // Make sure values has both data and slug
       if (!values.slug) {
-        const randomStr = Math.random().toString(36).substring(2, 8)
+        const randomStr = Math.random().toString(36).substring(2, 8);
         const prefix = values.data.title
           ? values.data.title
               .toLowerCase()
               .replace(/[^\w\s-]/g, "")
               .replace(/\s+/g, "-")
               .substring(0, 10)
-          : "project"
+          : "project";
 
-        values.slug = `${prefix}-${randomStr}`
+        values.slug = `${prefix}-${randomStr}`;
       }
 
       // Call server action
-      const result = await handleSubmitProject(values)
-      console.log("Server response:", result)
+      const result = await handleSubmitProject(values);
+      console.log("Server response:", result);
 
       // Check if we have a result object
       if (result) {
         if (result.success) {
-          toast.success(result.message)
-          form.reset()
+          toast.success(result.message);
+          form.reset();
         } else {
           // We have an error response
-          toast.error(result.message || "Failed to create project")
+          toast.error(result.message || "Failed to create project");
 
           // If there are field-specific errors, you could display them
           if (result.errors) {
-            console.error("Form validation errors:", result.errors)
+            console.error("Form validation errors:", result.errors);
           }
         }
       } else {
         // No result object at all
-        toast.error("No response from server")
+        toast.error("No response from server");
       }
     } catch (error) {
-      console.error("Form submission error:", error)
-      toast.error(`Error: ${(error as Error).message || "Unknown error"}`)
+      console.error("Form submission error:", error);
+      toast.error(`Error: ${(error as Error).message || "Unknown error"}`);
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   // Get tab icon based on tab name
   const getTabIcon = (tabName: string) => {
     switch (tabName) {
       case "basic":
-        return <Sparkles className="h-4 w-4 mr-2" />
+        return <Sparkles className="h-4 w-4 mr-2" />;
       case "content":
-        return <ChevronRight className="h-4 w-4 mr-2" />
+        return <ChevronRight className="h-4 w-4 mr-2" />;
       case "media":
-        return <Camera className="h-4 w-4 mr-2" />
+        return <Camera className="h-4 w-4 mr-2" />;
       case "additional":
-        return <BarChart className="h-4 w-4 mr-2" />
+        return <BarChart className="h-4 w-4 mr-2" />;
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <div className="container max-w-4xl py-10 min-w-3xl min-h-screen mx-auto">
@@ -289,7 +318,12 @@ export default function ProjectCreateForm() {
           <CardContent>
             <Form {...form}>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-                <Tabs defaultValue="basic" className="w-full" value={activeTab} onValueChange={setActiveTab}>
+                <Tabs
+                  defaultValue="basic"
+                  className="w-full"
+                  value={activeTab}
+                  onValueChange={setActiveTab}
+                >
                   <TabsList className="mb-6 w-full justify-start overflow-auto p-1 bg-muted/50 rounded-lg">
                     {["basic", "content", "media", "additional"].map((tab) => (
                       <TabsTrigger
@@ -301,7 +335,11 @@ export default function ProjectCreateForm() {
                           data-[state=active]:shadow-sm
                           transition-all duration-200 ease-in-out
                           flex items-center
-                          ${activeTab === tab ? "font-medium" : "text-muted-foreground"}
+                          ${
+                            activeTab === tab
+                              ? "font-medium"
+                              : "text-muted-foreground"
+                          }
                         `}
                       >
                         {getTabIcon(tab)}
@@ -322,7 +360,9 @@ export default function ProjectCreateForm() {
                         name="data.title"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">Project Title</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              Project Title
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="My Awesome Project"
@@ -372,7 +412,9 @@ export default function ProjectCreateForm() {
                         name="slug"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">URL Slug</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              URL Slug
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="my-project-slug"
@@ -380,13 +422,20 @@ export default function ProjectCreateForm() {
                                 disabled={autoSlug}
                                 className={`
                                   focus-visible:ring-primary/50 h-11 transition-all duration-200
-                                  ${autoSlug ? "bg-muted/50 text-muted-foreground" : ""}
+                                  ${
+                                    autoSlug
+                                      ? "bg-muted/50 text-muted-foreground"
+                                      : ""
+                                  }
                                 `}
                               />
                             </FormControl>
                             <FormDescription className="text-xs text-muted-foreground/80">
-                              This will be used in the URL: example.com/projects/
-                              <span className="font-mono text-primary/80">{field.value || "my-project-slug"}</span>
+                              This will be used in the URL:
+                              example.com/projects/
+                              <span className="font-mono text-primary/80">
+                                {field.value || "my-project-slug"}
+                              </span>
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -404,7 +453,9 @@ export default function ProjectCreateForm() {
                         name="data.description"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">Description</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              Description
+                            </FormLabel>
                             <FormControl>
                               <Textarea
                                 placeholder="Describe your project..."
@@ -429,7 +480,9 @@ export default function ProjectCreateForm() {
                         name="data.github"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">GitHub URL</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              GitHub URL
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="https://github.com/username/repo"
@@ -447,7 +500,9 @@ export default function ProjectCreateForm() {
                         name="data.liveLink"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">Live Demo URL</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              Live Demo URL
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="https://my-project.com"
@@ -471,13 +526,18 @@ export default function ProjectCreateForm() {
                         name="data.skills"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">Skills Used</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              Skills Used
+                            </FormLabel>
                             <div className="flex items-center gap-2">
                               <Input
                                 placeholder="Add a skill (e.g. React, TypeScript)"
                                 value={skillInput}
                                 onChange={(e) => setSkillInput(e.target.value)}
-                                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addSkill())}
+                                onKeyDown={(e) =>
+                                  e.key === "Enter" &&
+                                  (e.preventDefault(), addSkill())
+                                }
                                 className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
                               />
                               <Button
@@ -517,7 +577,9 @@ export default function ProjectCreateForm() {
                                   </motion.div>
                                 ))
                               ) : (
-                                <p className="text-muted-foreground text-sm italic">No skills added yet</p>
+                                <p className="text-muted-foreground text-sm italic">
+                                  No skills added yet
+                                </p>
                               )}
                             </div>
                             <FormMessage />
@@ -539,7 +601,9 @@ export default function ProjectCreateForm() {
                         name="data.overview"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">Project Overview</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              Project Overview
+                            </FormLabel>
                             <FormControl>
                               <Textarea
                                 placeholder="Detailed overview of your project..."
@@ -563,7 +627,9 @@ export default function ProjectCreateForm() {
                         name="data.process"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">Development Process</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              Development Process
+                            </FormLabel>
                             <FormControl>
                               <Textarea
                                 placeholder="How you built the project..."
@@ -587,13 +653,20 @@ export default function ProjectCreateForm() {
                         name="data.features"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">Key Features</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              Key Features
+                            </FormLabel>
                             <div className="flex items-center gap-2">
                               <Input
                                 placeholder="Add a feature"
                                 value={featureInput}
-                                onChange={(e) => setFeatureInput(e.target.value)}
-                                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addFeature())}
+                                onChange={(e) =>
+                                  setFeatureInput(e.target.value)
+                                }
+                                onKeyDown={(e) =>
+                                  e.key === "Enter" &&
+                                  (e.preventDefault(), addFeature())
+                                }
                                 className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
                               />
                               <Button
@@ -633,7 +706,9 @@ export default function ProjectCreateForm() {
                                   </motion.div>
                                 ))
                               ) : (
-                                <p className="text-muted-foreground text-sm italic">No features added yet</p>
+                                <p className="text-muted-foreground text-sm italic">
+                                  No features added yet
+                                </p>
                               )}
                             </div>
                             <FormMessage />
@@ -653,13 +728,20 @@ export default function ProjectCreateForm() {
                         name="data.challenges"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">Challenges</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              Challenges
+                            </FormLabel>
                             <div className="flex items-center gap-2">
                               <Input
                                 placeholder="Add a challenge faced"
                                 value={challengeInput}
-                                onChange={(e) => setChallengeInput(e.target.value)}
-                                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addChallenge())}
+                                onChange={(e) =>
+                                  setChallengeInput(e.target.value)
+                                }
+                                onKeyDown={(e) =>
+                                  e.key === "Enter" &&
+                                  (e.preventDefault(), addChallenge())
+                                }
                                 className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
                               />
                               <Button
@@ -690,7 +772,9 @@ export default function ProjectCreateForm() {
                                       {challenge}
                                       <button
                                         type="button"
-                                        onClick={() => removeChallenge(challenge)}
+                                        onClick={() =>
+                                          removeChallenge(challenge)
+                                        }
                                         className="ml-1 rounded-full p-0.5 hover:bg-destructive-foreground/10 transition-colors"
                                       >
                                         <X className="h-3 w-3" />
@@ -699,7 +783,9 @@ export default function ProjectCreateForm() {
                                   </motion.div>
                                 ))
                               ) : (
-                                <p className="text-muted-foreground text-sm italic">No challenges added yet</p>
+                                <p className="text-muted-foreground text-sm italic">
+                                  No challenges added yet
+                                </p>
                               )}
                             </div>
                             <FormMessage />
@@ -712,13 +798,20 @@ export default function ProjectCreateForm() {
                         name="data.learnings"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-base font-medium">Learnings</FormLabel>
+                            <FormLabel className="text-base font-medium">
+                              Learnings
+                            </FormLabel>
                             <div className="flex items-center gap-2">
                               <Input
                                 placeholder="Add what you learned"
                                 value={learningInput}
-                                onChange={(e) => setLearningInput(e.target.value)}
-                                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addLearning())}
+                                onChange={(e) =>
+                                  setLearningInput(e.target.value)
+                                }
+                                onKeyDown={(e) =>
+                                  e.key === "Enter" &&
+                                  (e.preventDefault(), addLearning())
+                                }
                                 className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
                               />
                               <Button
@@ -758,7 +851,9 @@ export default function ProjectCreateForm() {
                                   </motion.div>
                                 ))
                               ) : (
-                                <p className="text-muted-foreground text-sm italic">No learnings added yet</p>
+                                <p className="text-muted-foreground text-sm italic">
+                                  No learnings added yet
+                                </p>
                               )}
                             </div>
                             <FormMessage />
@@ -794,7 +889,9 @@ export default function ProjectCreateForm() {
                               name={`data.images.${index}.src`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Image URL</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Image URL
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="https://example.com/image.jpg"
@@ -811,7 +908,9 @@ export default function ProjectCreateForm() {
                               name={`data.images.${index}.alt`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Alt Text</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Alt Text
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="Description of the image"
@@ -830,7 +929,9 @@ export default function ProjectCreateForm() {
                               name={`data.images.${index}.description`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Image Description</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Image Description
+                                  </FormLabel>
                                   <FormControl>
                                     <Textarea
                                       placeholder="Detailed description of the image"
@@ -861,11 +962,13 @@ export default function ProjectCreateForm() {
                         type="button"
                         variant="outline"
                         size="sm"
-                        onClick={() => appendImage({ src: "", alt: "", description: "" })}
+                        onClick={() =>
+                          appendImage({ src: "", alt: "", description: "" })
+                        }
                         className="group hover:bg-primary/10 hover:text-primary transition-all duration-200"
                       >
-                        <Plus className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" /> Add
-                        Image
+                        <Plus className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" />{" "}
+                        Add Image
                       </Button>
                     </motion.div>
 
@@ -879,7 +982,9 @@ export default function ProjectCreateForm() {
                       transition={{ duration: 0.3, delay: 0.2 }}
                     >
                       <h3 className="font-medium flex items-center text-lg">
-                        <span className="inline-block mr-2 text-primary/80">❝</span>
+                        <span className="inline-block mr-2 text-primary/80">
+                          ❝
+                        </span>
                         Testimonial
                       </h3>
 
@@ -907,7 +1012,9 @@ export default function ProjectCreateForm() {
                           name="data.testimonial.author.name"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="font-medium">Author Name</FormLabel>
+                              <FormLabel className="font-medium">
+                                Author Name
+                              </FormLabel>
                               <FormControl>
                                 <Input
                                   placeholder="John Smith"
@@ -925,7 +1032,9 @@ export default function ProjectCreateForm() {
                           name="data.testimonial.author.role"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="font-medium">Author Role</FormLabel>
+                              <FormLabel className="font-medium">
+                                Author Role
+                              </FormLabel>
                               <FormControl>
                                 <Input
                                   placeholder="CEO at Company"
@@ -943,7 +1052,9 @@ export default function ProjectCreateForm() {
                           name="data.testimonial.author.avatar"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="font-medium">Author Avatar</FormLabel>
+                              <FormLabel className="font-medium">
+                                Author Avatar
+                              </FormLabel>
                               <FormControl>
                                 <Input
                                   placeholder="https://example.com/avatar.jpg"
@@ -985,7 +1096,9 @@ export default function ProjectCreateForm() {
                               name={`data.stats.${index}.label`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Label</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Label
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="Users"
@@ -1002,7 +1115,9 @@ export default function ProjectCreateForm() {
                               name={`data.stats.${index}.value`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Value</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Value
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="10,000+"
@@ -1021,7 +1136,9 @@ export default function ProjectCreateForm() {
                               name={`data.stats.${index}.icon.name`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Icon Name</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Icon Name
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="Users"
@@ -1041,7 +1158,9 @@ export default function ProjectCreateForm() {
                               name={`data.stats.${index}.icon.styling`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Icon Styling</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Icon Styling
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="text-blue-500"
@@ -1049,7 +1168,9 @@ export default function ProjectCreateForm() {
                                       className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
                                     />
                                   </FormControl>
-                                  <FormDescription className="text-xs">Optional CSS class for the icon</FormDescription>
+                                  <FormDescription className="text-xs">
+                                    Optional CSS class for the icon
+                                  </FormDescription>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1082,8 +1203,8 @@ export default function ProjectCreateForm() {
                         }
                         className="group hover:bg-primary/10 hover:text-primary transition-all duration-200"
                       >
-                        <Plus className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" /> Add
-                        Stat
+                        <Plus className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" />{" "}
+                        Add Stat
                       </Button>
                     </motion.div>
 
@@ -1113,7 +1234,9 @@ export default function ProjectCreateForm() {
                               name={`data.timeline.${index}.title`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Title</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Title
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="Planning Phase"
@@ -1130,7 +1253,9 @@ export default function ProjectCreateForm() {
                               name={`data.timeline.${index}.date`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Date</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Date
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="January 2023"
@@ -1149,7 +1274,9 @@ export default function ProjectCreateForm() {
                               name={`data.timeline.${index}.description`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Description</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Description
+                                  </FormLabel>
                                   <FormControl>
                                     <Textarea
                                       placeholder="What happened during this phase"
@@ -1189,8 +1316,8 @@ export default function ProjectCreateForm() {
                         }
                         className="group hover:bg-primary/10 hover:text-primary transition-all duration-200"
                       >
-                        <Plus className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" /> Add
-                        Timeline Item
+                        <Plus className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" />{" "}
+                        Add Timeline Item
                       </Button>
                     </motion.div>
 
@@ -1219,7 +1346,9 @@ export default function ProjectCreateForm() {
                             name={`data.insights.${index}.title`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="font-medium">Title</FormLabel>
+                                <FormLabel className="font-medium">
+                                  Title
+                                </FormLabel>
                                 <FormControl>
                                   <Input
                                     placeholder="Key Insight"
@@ -1236,7 +1365,9 @@ export default function ProjectCreateForm() {
                             name={`data.insights.${index}.content`}
                             render={({ field }) => (
                               <FormItem className="mt-5">
-                                <FormLabel className="font-medium">Content</FormLabel>
+                                <FormLabel className="font-medium">
+                                  Content
+                                </FormLabel>
                                 <FormControl>
                                   <Textarea
                                     placeholder="Detailed explanation of this insight"
@@ -1254,7 +1385,9 @@ export default function ProjectCreateForm() {
                               name={`data.insights.${index}.icon.name`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Icon Name</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Icon Name
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="Lightbulb"
@@ -1271,7 +1404,9 @@ export default function ProjectCreateForm() {
                               name={`data.insights.${index}.icon.styling`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className="font-medium">Icon Styling</FormLabel>
+                                  <FormLabel className="font-medium">
+                                    Icon Styling
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="text-yellow-500"
@@ -1311,8 +1446,8 @@ export default function ProjectCreateForm() {
                         }
                         className="group hover:bg-primary/10 hover:text-primary transition-all duration-200"
                       >
-                        <Plus className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" /> Add
-                        Insight
+                        <Plus className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" />{" "}
+                        Add Insight
                       </Button>
                     </motion.div>
                   </TabsContent>
@@ -1348,6 +1483,5 @@ export default function ProjectCreateForm() {
         </Card>
       </motion.div>
     </div>
-  )
+  );
 }
-

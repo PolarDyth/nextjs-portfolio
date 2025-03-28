@@ -1,6 +1,6 @@
 "use client";
 
-import AdminProjectList from "@/components/admin/projectlist";
+import AdminProjectList from "@/components/dashboard/projectlist";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Filter, Plus, Search } from "lucide-react";

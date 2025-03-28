@@ -7,7 +7,7 @@ import { projectFormSchema } from "./schema"
 import { useEffect, useState } from "react"
 import { useForm, useFieldArray } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { handleSubmitProject } from "./actions"
+import { handleUpdateProject } from "./actions"
 import { toast } from "sonner"
 import {
   Loader2,
@@ -35,6 +35,7 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { motion } from "framer-motion"
+import { ProjectData } from "@/utils/supabase/projects/definitions"
 
 type FormValues = z.infer<typeof projectFormSchema>
 
@@ -49,7 +50,8 @@ const slideUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 }
 
-export default function ProjectCreateForm() {
+
+export default function ProjectEditForm({ project, id }: { project: ProjectData; id: string }) {
   // Simple inputs
   const [skillInput, setSkillInput] = useState<string>("")
   const [featureInput, setFeatureInput] = useState<string>("")
@@ -64,33 +66,10 @@ export default function ProjectCreateForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(projectFormSchema),
     defaultValues: {
-      data: {
-        title: "",
-        description: "",
-        images: [{ src: "", alt: "", description: "" }],
-        skills: [],
-        github: "",
-        liveLink: "",
-        features: [],
-        challenges: [],
-        learnings: [],
-        stats: [{ label: "", value: "", icon: { name: "" } }],
-        timeline: [{ title: "", date: "", description: "" }],
-        testimonial: {
-          quote: "",
-          author: {
-            name: "",
-            role: "",
-            avatar: "",
-          },
-        },
-        insights: [{ title: "", content: "", icon: { name: "" } }],
-        overview: "",
-        process: "",
-      },
-      slug: "",
-    },
-  })
+      data: project.data,
+      slug: project.slug,
+    }
+  });
 
   // Set up field arrays for repeatable sections
   const {
@@ -205,6 +184,11 @@ export default function ProjectCreateForm() {
 
   // Form submission handler
   const onSubmit = async (values: FormValues) => {
+    toast.message(`ID: ${id}`)
+    if (!id) {
+      toast.error("Project ID is missing, cannot update")
+      return
+    }
     try {
       setIsSubmitting(true)
       console.log("Submitting form with values:", values)
@@ -223,8 +207,9 @@ export default function ProjectCreateForm() {
         values.slug = `${prefix}-${randomStr}`
       }
 
+      console.log("project id:", values)
       // Call server action
-      const result = await handleSubmitProject(values)
+      const result = await handleUpdateProject(+id, values)
       console.log("Server response:", result)
 
       // Check if we have a result object
@@ -328,6 +313,7 @@ export default function ProjectCreateForm() {
                                 placeholder="My Awesome Project"
                                 {...field}
                                 className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
+                                defaultValue={field.value || ""}
                               />
                             </FormControl>
                             <FormMessage />
@@ -382,6 +368,7 @@ export default function ProjectCreateForm() {
                                   focus-visible:ring-primary/50 h-11 transition-all duration-200
                                   ${autoSlug ? "bg-muted/50 text-muted-foreground" : ""}
                                 `}
+                                defaultValue={field.value || ""}
                               />
                             </FormControl>
                             <FormDescription className="text-xs text-muted-foreground/80">
@@ -1332,12 +1319,12 @@ export default function ProjectCreateForm() {
                     {isSubmitting ? (
                       <>
                         <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Creating Project...
+                        Updating Project...
                       </>
                     ) : (
                       <>
                         <Sparkles className="mr-2 h-5 w-5" />
-                        Create Project
+                        Update Project
                       </>
                     )}
                   </Button>

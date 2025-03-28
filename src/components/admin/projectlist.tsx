@@ -21,13 +21,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getProjects } from "@/utils/supabase/projects/projects-data";
-import { Project } from "@/utils/supabase/projects/definitions";
+import { ProjectData } from "@/utils/supabase/projects/definitions";
 import { deleteProject } from "@/utils/supabase/projects/project-actions";
 
 export default function AdminProjectList({ searchQuery = "" }) {
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [filteredProjects, setFilteredProjects] = useState<ProjectData[]>([]);
 
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -75,7 +75,6 @@ export default function AdminProjectList({ searchQuery = "" }) {
       <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm border-b border-border">
         <div className="col-span-5">Project</div>
         <div className="col-span-3 hidden md:block">Skills</div>
-        <div className="col-span-2 hidden md:block">Status</div>
         <div className="col-span-2 md:col-span-1">Created</div>
         <div className="col-span-1 text-right">Actions</div>
       </div>
@@ -128,24 +127,12 @@ export default function AdminProjectList({ searchQuery = "" }) {
               )}
             </div>
 
-            {/* <div className="col-span-2 hidden md:block">
-              <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                  project.data.status === "Published"
-                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                }`}
-              >
-                {project.data.status}
-              </span>
-            </div> */}
-
             <div className="col-span-2 md:col-span-1 text-muted-foreground text-sm">
-              {new Date(project.created_at).toLocaleDateString("en-UK", {
+              {project.created_at ? new Date(project.created_at).toLocaleDateString("en-UK", {
                 year: "numeric",
                 month: "short",
                 day: "numeric",
-              })}
+              }) : "No date"}
             </div>
 
             <div className="col-span-1 text-right [&_*]:cursor-pointer">
@@ -162,7 +149,7 @@ export default function AdminProjectList({ searchQuery = "" }) {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href={`/admin/projects/edit/${project.id}`}>
+                    <Link href={`/dashboard/project/${project.id}/edit/`}>
                       <Edit className="h-4 w-4 mr-2" /> Edit
                     </Link>
                   </DropdownMenuItem>
@@ -191,7 +178,7 @@ export default function AdminProjectList({ searchQuery = "" }) {
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
                           <AlertDialogAction
-                            onClick={() => handleDeleteProject(project.id)}
+                            onClick={() => project.id !== undefined && project.id !== null && handleDeleteProject(project.id)}
                           >
                             Continue
                           </AlertDialogAction>

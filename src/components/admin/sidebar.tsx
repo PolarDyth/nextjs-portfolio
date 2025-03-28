@@ -2,11 +2,11 @@ import { FileText, FolderPlus, LayoutDashboard, Settings, Users } from "lucide-r
 import Link from "next/link";
 
 const sidebarItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
-  { icon: FolderPlus, label: "Projects", href: "/admin/projects" },
-  { icon: FileText, label: "Blog Posts", href: "/admin/blog" },
-  { icon: Users, label: "User Messages", href: "/admin/messages" },
-  { icon: Settings, label: "Settings", href: "/admin/settings" },
+  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+  { icon: FolderPlus, label: "Projects", href: "/dashboard/projects" },
+  { icon: FileText, label: "Blog Posts", href: "/dashboard/blog" },
+  { icon: Users, label: "User Messages", href: "/dashboard/messages" },
+  { icon: Settings, label: "Settings", href: "/dashboard/settings" },
 ]
 
 export default function AdminSidebar() {

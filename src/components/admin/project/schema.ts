@@ -43,16 +43,12 @@ const dataSchema = z.object({
   title: z.string().min(3).max(100),
   description: z.string().min(3).max(1000),
   images: z.array(imageSchema),
-  skills: z.array(z.object({
-    skill: z.string().max(50),})),
+  skills: z.array(z.string().max(50)),
   github: z.string().url(),
   liveLink: z.string().url(),
-  features: z.array(z.object({
-    feature: z.string().max(50),})),
-  challenges: z.array(z.object({
-    challenge: z.string().max(50),})),
-  learnings: z.array(z.object({
-    learning: z.string().max(50),})),
+  features: z.array(z.string().max(50)),
+  challenges: z.array(z.string().max(50)),
+  learnings: z.array(z.string().max(50)),
   stats: z.array(statSchema),
   timeline: z.array(timelineSchema),
   testimonial: testimonialSchema,
@@ -65,10 +61,3 @@ export const projectFormSchema = z.object({
   data: dataSchema,
   slug: z.string().min(3).max(100),
 });
-
-export type State = {
-  errors?: {
-    [key: string]: string[] | null;
-  }
-  message?: string | null;
-}

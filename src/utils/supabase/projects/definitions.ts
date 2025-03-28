@@ -47,3 +47,9 @@ export type Project = {
   };
   slug: string;
 };
+
+export interface ProjectData extends Project {
+  id?: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}

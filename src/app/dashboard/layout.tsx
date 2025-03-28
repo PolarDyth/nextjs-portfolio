@@ -1,4 +1,5 @@
 import AdminSidebar from "@/components/admin/sidebar"
+import { Toaster } from 'sonner';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
@@ -6,6 +7,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     <div className="flex just-center">
       <AdminSidebar />
       {children}
+      <Toaster />
     </div>
   )
 }

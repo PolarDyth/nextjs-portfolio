@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 export default async function Page(props: { params: Promise<{id: string}>}) {
   const params = await props.params;
   const id = params.id;
-  console.log("ID:", id)
 
     const project: ProjectData = await getProjectById(id);
 

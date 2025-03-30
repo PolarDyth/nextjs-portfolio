@@ -3,18 +3,15 @@ import { headers } from "next/headers";
 
 // Define rate limit rules for different actions
 const RATE_LIMIT_RULES = {
-  project_create: { maxRequests: 5, windowSeconds: 3600 }, // 5 creates per hour
-  project_update: { maxRequests: 20, windowSeconds: 3600 }, // 20 updates per hour
-  project_delete: { maxRequests: 5, windowSeconds: 3600 }, // 5 deletions per hour
-  api_request: { maxRequests: 100, windowSeconds: 60 }, // 100 requests per minute
-  message_submit: { maxRequests: 2, windowSeconds: 3600 }, // 2 messages per hour
+  project_create: { maxRequests: 5, windowSeconds: 3600 },
+  project_update: { maxRequests: 20, windowSeconds: 3600 },
+  project_delete: { maxRequests: 5, windowSeconds: 3600 },
+  api_request: { maxRequests: 100, windowSeconds: 60 },
+  message_submit: { maxRequests: 2, windowSeconds: 3600 },
 };
 
 type RateLimitAction = keyof typeof RATE_LIMIT_RULES;
 
-/**
- * Checks if a request should be rate limited
- */
 export async function checkRateLimit(
   action: RateLimitAction,
   userId?: string
@@ -23,16 +20,21 @@ export async function checkRateLimit(
   remaining: number;
   resetInSeconds: number;
 }> {
-  const supabase = await createClient();
-  const{
-    data: { user },
-  } = await supabase.auth.getUser()
+  const supabase = await createClient(); // Don't use await here
   
-  if (user?.role == "authenticated") {
-    console.log("User is authenticated, skipping rate limit check.");
-    return { allowed: true, remaining: 999, resetInSeconds: 0 };
+  try {
+    // Check if user is authenticated
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Skip rate limiting for authenticated users
+    if (user) {
+      console.log("User is authenticated, skipping rate limit check.");
+      return { allowed: true, remaining: 999, resetInSeconds: 0 };
+    }
+  } catch (err) {
+    console.error("Error checking authentication:", err);
+    // Continue with rate limiting
   }
-
 
   // Get the current timestamp
   const now = new Date();
@@ -50,84 +52,93 @@ export async function checkRateLimit(
   // Get client IP if userId is not provided
   let clientIdentifier = userId;
   if (!clientIdentifier) {
-    const forwardedFor = (await headers()).get("x-forwarded-for") || "unknown";
-    clientIdentifier = `ip:${forwardedFor.split(",")[0].trim()}`;
+    try {
+      // Get headers synchronously - wrap in try/catch to handle dynamic route errors
+      const headersList = await headers();
+      const forwardedFor = headersList.get("x-forwarded-for") || "unknown";
+      clientIdentifier = `ip:${forwardedFor.split(",")[0].trim()}`;
+    } catch (err) {
+      console.error("Error getting client IP:", err);
+      clientIdentifier = "unknown";
+    }
   }
 
-  // First, clean up old rate limit entries for this user/action (optional)
-  await supabase
-    .from("rate_limits")
-    .delete()
-    .lt("timestamp", windowStart.toISOString())
-    .match({
-      identifier: clientIdentifier,
-      action: action,
-    });
+  // First, clean up old rate limit entries
+  try {
+    await supabase
+      .from("rate_limits")
+      .delete()
+      .lt("timestamp", windowStart.toISOString())
+      .match({
+        identifier: clientIdentifier,
+        action: action,
+      });
+  } catch (err) {
+    console.error("Error cleaning up old rate limits:", err);
+    // Continue even if cleanup fails
+  }
 
   // Count existing requests in the current window
-  const { count, error: countError } = await supabase
-    .from("rate_limits")
-    .select("*", { count: "exact", head: false })
-    .match({
-      identifier: clientIdentifier,
-      action: action,
-    })
-    .gte("timestamp", windowStart.toISOString());
+  let currentCount = 0;
+  try {
+    const { count, error: countError } = await supabase
+      .from("rate_limits")
+      .select("*", { count: "exact", head: false })
+      .match({
+        identifier: clientIdentifier,
+        action: action,
+      })
+      .gte("timestamp", windowStart.toISOString());
 
-  if (countError) {
-    console.error("Error checking rate limit:", countError);
+    if (countError) throw countError;
+    currentCount = count || 0;
+  } catch (err) {
+    console.error("Error checking rate limit:", err);
     // Be lenient if we can't check the rate limit
     return { allowed: true, remaining: rule.maxRequests, resetInSeconds: 0 };
   }
 
   // Check if user has exceeded rate limit
-  const currentCount = count || 0;
   const allowed = currentCount < rule.maxRequests;
-  const remaining = Math.max(
-    0,
-    rule.maxRequests - currentCount - (allowed ? 1 : 0)
-  );
+  const remaining = Math.max(0, rule.maxRequests - currentCount - (allowed ? 1 : 0));
 
   // If allowed, record this request
   if (allowed) {
-    // Insert a new record for this request
-    const { error: insertError } = await supabase.from("rate_limits").insert({
-      identifier: clientIdentifier,
-      action: action,
-      timestamp: now.toISOString(),
-      ip_address: clientIdentifier.startsWith("ip:")
-        ? clientIdentifier.substring(3)
-        : null,
-    });
+    try {
+      // Insert a new record for this request
+      const { error: insertError } = await supabase.from("rate_limits").insert({
+        identifier: clientIdentifier,
+        action: action,
+        timestamp: now.toISOString(),
+        ip_address: clientIdentifier.startsWith("ip:") ? clientIdentifier.substring(3) : null,
+      });
 
-    if (insertError) {
-      console.error("Error recording rate limit usage:", insertError);
+      if (insertError) throw insertError;
+    } catch (err) {
+      console.error("Error recording rate limit usage:", err);
     }
   }
 
-  // Get the oldest record to calculate reset time
-  const { data: oldestRecord, error: oldestError } = await supabase
-    .from("rate_limits")
-    .select("timestamp")
-    .match({
-      identifier: clientIdentifier,
-      action: action,
-    })
-    .order("timestamp", { ascending: true })
-    .limit(1);
-
   // Calculate when the rate limit will reset
   let resetInSeconds = rule.windowSeconds;
+  try {
+    const { data: oldestRecord, error: oldestError } = await supabase
+      .from("rate_limits")
+      .select("timestamp")
+      .match({
+        identifier: clientIdentifier,
+        action: action,
+      })
+      .order("timestamp", { ascending: true })
+      .limit(1);
 
-  if (!oldestError && oldestRecord && oldestRecord.length > 0) {
-    const oldestTimestamp = new Date(oldestRecord[0].timestamp);
-    const resetTime = new Date(
-      oldestTimestamp.getTime() + rule.windowSeconds * 1000
-    );
-    resetInSeconds = Math.max(
-      0,
-      Math.floor((resetTime.getTime() - now.getTime()) / 1000)
-    );
+    if (!oldestError && oldestRecord && oldestRecord.length > 0) {
+      const oldestTimestamp = new Date(oldestRecord[0].timestamp);
+      const resetTime = new Date(oldestTimestamp.getTime() + rule.windowSeconds * 1000);
+      resetInSeconds = Math.max(0, Math.floor((resetTime.getTime() - now.getTime()) / 1000));
+    }
+  } catch (err) {
+    console.error("Error calculating rate limit reset time:", err);
   }
 
   return {

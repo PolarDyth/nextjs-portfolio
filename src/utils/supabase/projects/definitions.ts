@@ -1,4 +1,4 @@
-import StringToIcon from "@/utils/string-to-icon";
+import { IconName } from "@/utils/string-to-icon";
 
 export type Project = {
   data: {
@@ -19,7 +19,7 @@ export type Project = {
       label: string;
       value: string;
       icon: {
-        name: keyof typeof StringToIcon;
+        name: IconName;
         styling?: string;
       };
     }[];
@@ -40,7 +40,7 @@ export type Project = {
       title: string;
       content: string;
       icon: {
-        name: keyof typeof StringToIcon;
+        name: IconName;
         styling?: string;
       };
     }[];

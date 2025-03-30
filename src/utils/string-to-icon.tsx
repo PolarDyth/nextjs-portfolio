@@ -10,7 +10,7 @@ import { JSX } from "react";
 import { SiReact, SiNodedotjs, SiTypescript, SiJavascript, SiHtml5, SiCss3, SiNextdotjs, SiTailwindcss, SiFigma } from "@icons-pack/react-simple-icons";
 
 // Create a mapping of string names to icon components
-const iconComponents = {
+export const iconComponents = {
   // Lucide icons
   clock: Clock,
   calendar: Calendar,

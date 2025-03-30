@@ -49,6 +49,14 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { motion } from "framer-motion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import StringToIcon, { iconComponents, IconName } from "@/utils/string-to-icon";
 
 type FormValues = z.infer<typeof projectFormSchema>;
 
@@ -1137,22 +1145,60 @@ export default function ProjectCreateForm() {
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel className="font-medium">
-                                    Icon Name
+                                    Icon
                                   </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="Users"
-                                      {...field}
-                                      className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
-                                    />
-                                  </FormControl>
-                                  <FormDescription className="text-xs">
-                                    Lucide icon name (Users, Code, etc)
-                                  </FormDescription>
+                                  <Select
+                                    onValueChange={field.onChange}
+                                    value={field.value}
+                                  >
+                                    <FormControl>
+                                      <SelectTrigger className="h-11 focus-visible:ring-primary/50 transition-all duration-200">
+                                        <SelectValue placeholder="Select an icon">
+                                          {field.value && (
+                                            <div className="flex items-center gap-2">
+                                              <StringToIcon
+                                                name={field.value as IconName}
+                                                styling="h-4 w-4"
+                                              />
+                                              <span className="capitalize">
+                                                {field.value
+                                                  .replace(/([A-Z])/g, " $1")
+                                                  .trim()}
+                                              </span>
+                                            </div>
+                                          )}
+                                        </SelectValue>
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent className="max-h-[320px]">
+                                      {Object.entries(iconComponents)
+                                        .filter(([name]) => name !== "null")
+                                        .map(([iconName]) => (
+                                          <SelectItem
+                                            key={iconName}
+                                            value={iconName}
+                                            className="py-2.5"
+                                          >
+                                            <div className="flex items-center gap-2">
+                                              <StringToIcon
+                                                name={iconName as IconName}
+                                                styling="h-4 w-4"
+                                              />
+                                              <span className="capitalize">
+                                                {iconName
+                                                  .replace(/([A-Z])/g, " $1")
+                                                  .trim()}
+                                              </span>
+                                            </div>
+                                          </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                  </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
                             />
+
                             <FormField
                               control={control}
                               name={`data.stats.${index}.icon.styling`}
@@ -1165,6 +1211,7 @@ export default function ProjectCreateForm() {
                                     <Input
                                       placeholder="text-blue-500"
                                       {...field}
+                                      value={field.value || ""}
                                       className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
                                     />
                                   </FormControl>
@@ -1182,7 +1229,7 @@ export default function ProjectCreateForm() {
                               variant="outline"
                               size="sm"
                               onClick={() => removeStat(index)}
-                              disabled={statFields.length <= 1}
+                              disabled={insightFields.length <= 1}
                               className="hover:bg-destructive/10 hover:text-destructive transition-all duration-200"
                             >
                               <Trash2 className="h-4 w-4 mr-2" /> Remove
@@ -1198,7 +1245,7 @@ export default function ProjectCreateForm() {
                           appendStat({
                             label: "",
                             value: "",
-                            icon: { name: "", styling: "" },
+                            icon: { name: "lightbulb", styling: "" },
                           })
                         }
                         className="group hover:bg-primary/10 hover:text-primary transition-all duration-200"
@@ -1386,19 +1433,60 @@ export default function ProjectCreateForm() {
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel className="font-medium">
-                                    Icon Name
+                                    Icon
                                   </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="Lightbulb"
-                                      {...field}
-                                      className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
-                                    />
-                                  </FormControl>
+                                  <Select
+                                    onValueChange={field.onChange}
+                                    value={field.value}
+                                  >
+                                    <FormControl>
+                                      <SelectTrigger className="h-11 focus-visible:ring-primary/50 transition-all duration-200">
+                                        <SelectValue placeholder="Select an icon">
+                                          {field.value && (
+                                            <div className="flex items-center gap-2">
+                                              <StringToIcon
+                                                name={field.value as IconName}
+                                                styling="h-4 w-4"
+                                              />
+                                              <span className="capitalize">
+                                                {field.value
+                                                  .replace(/([A-Z])/g, " $1")
+                                                  .trim()}
+                                              </span>
+                                            </div>
+                                          )}
+                                        </SelectValue>
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent className="max-h-[320px]">
+                                      {Object.entries(iconComponents)
+                                        .filter(([name]) => name !== "null")
+                                        .map(([iconName]) => (
+                                          <SelectItem
+                                            key={iconName}
+                                            value={iconName}
+                                            className="py-2.5"
+                                          >
+                                            <div className="flex items-center gap-2">
+                                              <StringToIcon
+                                                name={iconName as IconName}
+                                                styling="h-4 w-4"
+                                              />
+                                              <span className="capitalize">
+                                                {iconName
+                                                  .replace(/([A-Z])/g, " $1")
+                                                  .trim()}
+                                              </span>
+                                            </div>
+                                          </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                  </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
                             />
+
                             <FormField
                               control={control}
                               name={`data.insights.${index}.icon.styling`}
@@ -1411,6 +1499,7 @@ export default function ProjectCreateForm() {
                                     <Input
                                       placeholder="text-yellow-500"
                                       {...field}
+                                      value={field.value || ""}
                                       className="focus-visible:ring-primary/50 h-11 transition-all duration-200"
                                     />
                                   </FormControl>
@@ -1441,7 +1530,7 @@ export default function ProjectCreateForm() {
                           appendInsight({
                             title: "",
                             content: "",
-                            icon: { name: "", styling: "" },
+                            icon: { name: "lightbulb", styling: "" },
                           })
                         }
                         className="group hover:bg-primary/10 hover:text-primary transition-all duration-200"

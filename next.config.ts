@@ -12,6 +12,12 @@ module.exports = {
         hostname: 'cdn.discordapp.com',
         port: '',
         pathname: '/attachments/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'github.com',
+        port: '',
+        pathname: '/**',
       }
     ]
   }

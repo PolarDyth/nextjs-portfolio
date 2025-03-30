@@ -1,12 +1,12 @@
 import type React from "react"
 import { cn } from "@/lib/utils"
-import StringToIcon from "@/utils/string-to-icon"
+import StringToIcon, { IconName } from "@/utils/string-to-icon"
 
 interface InsightItemProps {
   title: string
   content: string
   icon: {
-    name: keyof typeof StringToIcon
+    name: IconName
     styling?: string
   }
 }

@@ -56,7 +56,7 @@ export async function deleteProject(id: number): Promise<void> {
   
   const { error } = await supabase.from("projects").delete().match({ id });
   if (error) {
-    console.log(error)
+    console.error(error)
     throw error;
   }
 }

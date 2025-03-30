@@ -1,10 +1,7 @@
 import { z } from "zod";
-import { IconName } from "@/utils/string-to-icon";
+import { iconComponents, IconName } from "@/utils/string-to-icon";
 
-const validIconNames = Object.keys(
-
-  {} as Record<IconName, unknown>
-) as [IconName, ...IconName[]];
+const validIconNames = Object.keys(iconComponents) as [IconName, ...IconName[]];
 
 // Create a zod schema for icon names
 const iconNameSchema = z.enum(validIconNames);

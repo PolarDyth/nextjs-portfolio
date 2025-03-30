@@ -27,7 +27,7 @@ export async function checkRateLimit(
     const { data: { user } } = await supabase.auth.getUser();
     
     // Skip rate limiting for authenticated users
-    if (user) {
+    if (user?.email == "williamalexander1603@gmail.com") {
       console.log("User is authenticated, skipping rate limit check.");
       return { allowed: true, remaining: 999, resetInSeconds: 0 };
     }

@@ -1,17 +1,14 @@
-import { createClient } from "@/utils/supabase/server"
-import { redirect } from "next/navigation"
+import AdminSidebar from "@/components/dashboard/sidebar"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data?.user) {
-    redirect('/login')
-  }
   return (
-    <div>
-      <h1>Dashboard Layout</h1>
-      {children}
-    </div>
+    <>
+      <div className="flex flex-row min-h-screen pt-16">  {/* Add pt-16 to account for navbar height */}
+        <AdminSidebar />
+        <main className="flex-1">
+          {children}
+        </main>
+      </div>
+    </>
   )
 }

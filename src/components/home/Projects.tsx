@@ -2,43 +2,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import ProjectCard from "../ui/ProjectCard";
+import { getProjects } from "@/utils/supabase/projects/projects-data";
 
-export default function Projects() {
-  const projects = [
-    {
-      slug: "portfolio-website",
-      data: {
-        title: "Portfolio Website",
-        description: "A modern portfolio website built with Next.js, TypeScript, and Tailwind CSS.",
-        skills: [["Next.js", "https://nextjs.org/"], ["React", "https://react.dev/"], ["TypeScript", "https://www.typescriptlang.org/"], ["Tailwind CSS", "https://tailwindcss.com/"]],
-        github: "https://github.com/username/portfolio",
-        liveLink: "https://yourportfolio.com",
-        images: [{ src: "/projects/portfolio.jpg", alt: "Portfolio Website Screenshot" }]
-      }
-    },
-    {
-      slug: "e-commerce-platform",
-      data: {
-        title: "E-Commerce Platform",
-        description: "A full-stack e-commerce application with product management, cart functionality, and payment processing.",
-        skills: ["React", "Node.js", "MongoDB", "Stripe API"],
-        github: "https://github.com/username/ecommerce",
-        liveLink: "https://your-ecommerce.com",
-        images: [{ src: "/projects/ecommerce.jpg", alt: "E-Commerce Platform Screenshot" }]
-      }
-    },
-    {
-      slug: "ai-image-generator",
-      data: {
-        title: "AI Image Generator",
-        description: "An application that generates images using AI models based on text prompts.",
-        skills: ["Python", "TensorFlow", "React", "Flask"],
-        github: "https://github.com/username/ai-image-gen",
-        liveLink: "https://ai-image-gen.com",
-        images: [{ src: "/projects/ai-generator.jpg", alt: "AI Image Generator Screenshot" }]
-      }
-    }
-  ];
+export default async function Projects() {
+  const projects = await getProjects();
 
   return (
     <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 animate-fade-in">

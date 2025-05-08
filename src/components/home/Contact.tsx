@@ -19,6 +19,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { contactInfo } from "@/constants/contact-info";
 
 // Define contact form schema
 const contactFormSchema = z.object({
@@ -33,22 +34,22 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const contactInfo = [
+  const contact = [
     {
       icon: <Mail className="h-5 w-5" />,
       title: "Email",
-      link: "williamalexander1603@gmail.com",
+      link: contactInfo.email,
       action: "mailto:",
     },
     {
       icon: <Linkedin className="h-5 w-5" />,
       title: "LinkedIn",
-      link: "linkedin.com",
+      link: contactInfo.linkedin.replace(/^https?:\/\//i, ""),
     },
     {
       icon: <SiGithub className="h-5 w-5" />,
       title: "GitHub",
-      link: "https://github.com/PolarDyth",
+      link: contactInfo.github.replace(/^https?:\/\//i, ""),
     },
   ];
 
@@ -100,7 +101,7 @@ export default function Contact() {
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-center mx-auto gap-8 lg:gap-14 mt-8 max-w-3xl">
         {/* Contact Info */}
         <div className="space-y-4 sm:space-y-6 w-full lg:w-auto">
-          {contactInfo.map((prop, index) => (
+          {contact.map((prop, index) => (
             <div key={index}>
               <div className="flex items-center gap-3 sm:gap-4 text-left">
                 <Link

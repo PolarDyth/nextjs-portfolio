@@ -20,7 +20,6 @@ import {
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getProjects } from "@/utils/supabase/projects/projects-data";
 import { ProjectData } from "@/utils/supabase/projects/definitions";
 import { deleteProject } from "@/utils/supabase/projects/project-actions";
 
@@ -33,7 +32,14 @@ export default function AdminProjectList({ searchQuery = "" }) {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const projectData = await getProjects();
+        const res = await fetch("/api/projects");
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch projects");
+        }
+
+        const projectData = await res.json();
+
         setProjects(projectData);
       } catch (error) {
         console.error("Failed to fetch projects:", error);

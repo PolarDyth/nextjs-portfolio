@@ -8,7 +8,7 @@ export default async function Projects() {
   const projects = await getProjects();
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 animate-fade-in">
+    <section id="projects" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 animate-fade-in">
       <div className="text-left flex flex-col mb-6 sm:mb-8">
         <h2 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
           Featured Projects

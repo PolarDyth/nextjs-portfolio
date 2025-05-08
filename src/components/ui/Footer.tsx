@@ -1,3 +1,4 @@
+import { contactInfo } from "@/constants/contact-info";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import { Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
@@ -17,13 +18,13 @@ export default function Footer() {
           © {new Date().getFullYear()} William Alexander. All rights reserved.
         </div>
         <div className="flex gap-5 items-center">
-          <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
+          <Link href={contactInfo.github} target="_blank" rel="noopener noreferrer">
             <SiGithub className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
-          <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+          <Link href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer">
             <Linkedin className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
-          <Link href="mailto:contact@example.com">
+          <Link href={`mailto:${contactInfo.email}`}>
             <Mail className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
         </div>
@@ -38,13 +39,13 @@ export default function Footer() {
           </Link>
         </div>
         <div className="flex gap-6 items-center py-3">
-          <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
+          <Link href={contactInfo.github} target="_blank" rel="noopener noreferrer">
             <SiGithub className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
-          <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+          <Link href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer">
             <Linkedin className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
-          <Link href="mailto:contact@example.com">
+          <Link href={`mailto:${contactInfo.email}`}>
             <Mail className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
         </div>

@@ -5,6 +5,7 @@ import { ArrowRight, Linkedin, Mail } from "lucide-react";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { contactInfo } from "@/constants/contact-info";
 
 export default function Hero() {
   const [text, setText] = useState("");
@@ -49,7 +50,7 @@ export default function Hero() {
           <span>Experiences</span>
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base max-w-md">
-          Heriot Watt University student with expertise in Java, React, and Python, creating innovative software solutions.
+          Heriot Watt University student with expertise in Java, React/NextJS, and Node.js, creating innovative software solutions.
         </p>
         <div className="flex gap-3 sm:gap-5 flex-wrap">
           <Button asChild className="sm:text-base">
@@ -64,13 +65,13 @@ export default function Hero() {
           </Button>
         </div>
         <div className="flex gap-5 items-center pt-2">
-          <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
+          <Link href={contactInfo.github} target="_blank" rel="noopener noreferrer">
             <SiGithub className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
-          <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+          <Link href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer">
             <Linkedin className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
-          <Link href="mailto:your@email.com">
+          <Link href={`mailto:${contactInfo.email}`} target="_blank" rel="noopener noreferrer">
             <Mail className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200" />
           </Link>
         </div>

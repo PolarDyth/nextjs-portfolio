@@ -7,10 +7,10 @@ import { Menu, X } from "lucide-react";
 
 const navLocations = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Skills", href: "/skills" },
-  { name: "Projects", href: "/projects" },
-  { name: "Contact", href: "/contact" },
+  { name: "About", href: "/#about" },
+  { name: "Skills", href: "/#skills" },
+  { name: "Projects", href: "/#projects" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export default function Nav() {
@@ -25,6 +25,16 @@ export default function Nav() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const href = e.currentTarget.getAttribute("href")
+    if (href && href.startsWith("/#")) {
+      e.preventDefault()
+      const targetId = href.replace("/#", "")
+      const elem = document.getElementById(targetId)
+      elem?.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
   if (!isMounted) return null;
 
@@ -46,6 +56,7 @@ export default function Nav() {
               href={location.href}
               key={index}
               className="font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-primary after:transition-all"
+              onClick={handleClick}
             >
               {location.name}
             </Link>
@@ -58,7 +69,7 @@ export default function Nav() {
             asChild
             className="font-semibold hover:animate-pulse"
           >
-            <Link href="/contact">
+            <Link href="/#contact" onClick={handleClick}>
               Contact Me
             </Link>
           </Button>
@@ -99,7 +110,7 @@ export default function Nav() {
               className="font-semibold w-full max-w-xs"
               onClick={() => setIsMenuOpen(false)}
             >
-              <Link href="/contact">
+              <Link href="/#contact">
                 Contact Me
               </Link>
             </Button>

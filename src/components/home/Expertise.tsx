@@ -1,4 +1,4 @@
-import { Code, Database, Terminal } from 'lucide-react';
+import { Code, Database } from 'lucide-react';
 
 export default function Expertise() {
   const cards = [
@@ -8,9 +8,10 @@ export default function Expertise() {
       description: "Creating responsive and interactive user interfaces with modern frameworks.",
       languages: [
         "React",
+        "Next.js",
         "Tailwind CSS",
         "Typescript",
-        "Javascript"
+        "Javascript",
       ]
     },
     {
@@ -24,17 +25,6 @@ export default function Expertise() {
         "SQL"
       ]
     },
-    {
-      icon: <Terminal />,
-      title: "Data Science",
-      description: "Analyzing and visualizing data to extract meaningful insights and patterns.",
-      languages: [
-        "Python",
-        "Pandas",
-        "NumPy",
-        "Matplotlib"
-      ]
-    },
   ]
 
   return (
@@ -45,7 +35,7 @@ export default function Expertise() {
         <p className="text-muted-foreground text-sm sm:text-base max-w-xl sm:max-w-2xl mx-auto">With a strong foundation in multiple programming languages and frameworks, I build robust and scalable applications.</p>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
         {cards.map((props, index) => (
           <div 
             key={index} 
